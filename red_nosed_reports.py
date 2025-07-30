@@ -1,5 +1,6 @@
 # --- Day 2: Red-Nosed Reports ---
 
+
 # --- (Part 1) ---
 def safe_reports(report):
     monitor = []
@@ -7,12 +8,14 @@ def safe_reports(report):
     for number_list in report:
         x, y = 0, 1
         prev_sign = None
-        
+
         while y < len(number_list):
             diff = number_list[y] - number_list[x]
             current_sign = 1 if diff > 0 else -1
 
-            if abs(diff) > 3 or diff == 0 or (prev_sign is not None and prev_sign != current_sign):
+            if abs(diff) not in {1, 2, 3} or (
+                prev_sign is not None and prev_sign != current_sign
+            ):
                 monitor.append("unsafe")
                 break
 
@@ -25,6 +28,7 @@ def safe_reports(report):
             safe_count += 1
     return monitor, safe_count
 
+
 # --- Helper Function (Part 2) ---
 def is_report_safe(report):
     """
@@ -35,23 +39,17 @@ def is_report_safe(report):
     if len(report) < 2:
         return True
 
-    x, y = 0, 1
     prev_sign = None
-    while y < len(report):
-        diff = report[y] - report[x]
-
+    for i in range(len(report) - 1):
+        diff = report[i + 1] - report[i]
         current_sign = 1 if diff > 0 else -1
 
-        if (
-            abs(diff) > 3
-            or diff == 0
-            or (prev_sign is not None and prev_sign != current_sign)
+        if abs(diff) not in {1, 2, 3} or (
+            prev_sign is not None and prev_sign != current_sign
         ):
             return False
 
         prev_sign = current_sign
-        x += 1
-        y += 1
 
     return True
 
